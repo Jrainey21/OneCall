@@ -1,21 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root type="object">
-  <firstName type="string">Mary</firstName>
-  <lastName type="string">Smith</lastName>
-  <age type="number">32</age>
-  <firstName type="string">John</firstName>
-  <lastName type="string">Doe</lastName>
-  <age type="number">23</age>
-  <firstName type="string">Jim</firstName>
-  <lastName type="string">Galley</lastName>
-  <age type="number">41</age>
-  <firstName type="string">Sally</firstName>
-  <lastName type="string">Green</lastName>
-  <age type="number">27</age>
-  <firstName type="string">Jack</firstName>
-  <lastName type="string">James</lastName>
-  <age type="number">45</age>
-  <firstName type="string">Bill</firstName>
-  <lastName type="string">Miller</lastName>
-  <age type="number">25</age>
+  <accounting type="array">
+    <item type="object">
+      <firstName type="string">Mary</firstName>
+      <lastName type="string">Smith</lastName>
+      <age type="number">32</age>
+    </item>
+    <item type="object">
+      <firstName type="string">John</firstName>
+      <lastName type="string">Doe</lastName>
+      <age type="number">23</age>
+    </item>
+  </accounting>
+  <sales type="array">
+    <item type="object">
+      <firstName type="string">Jim</firstName>
+      <lastName type="string">Galley</lastName>
+      <age type="number">41</age>
+    </item>
+    <item type="object">
+      <firstName type="string">Sally</firstName>
+      <lastName type="string">Green</lastName>
+      <age type="number">27</age>
+    </item>
+  </sales>
+  <it type="array">
+    <item type="object">
+      <firstName type="string">Jack</firstName>
+      <lastName type="string">James</lastName>
+      <age type="number">45</age>
+    </item>
+    <item type="object">
+      <firstName type="string">Bill</firstName>
+      <lastName type="string">Miller</lastName>
+      <age type="number">25</age>
+    </item>
+  </it>
 </root>

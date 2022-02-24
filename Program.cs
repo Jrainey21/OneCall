@@ -142,45 +142,92 @@ namespace OneCall
             //Issues trying to loop through this list. Perhaps because I created the list by looping thru json instead of with objects I later created.
 
 
-            //Created variables to store formatted serialized objects.
-            string accountant1 = JsonConvert.SerializeObject(acc1, Newtonsoft.Json.Formatting.Indented);
-            string accountant2 = JsonConvert.SerializeObject(acc2, Newtonsoft.Json.Formatting.Indented);
-            string salesman1= JsonConvert.SerializeObject(sales1, Newtonsoft.Json.Formatting.Indented);
-            string salesman2=JsonConvert.SerializeObject(sales2, Newtonsoft.Json.Formatting.Indented);
-            string strBillyBob = JsonConvert.SerializeObject(billyBob,Newtonsoft.Json.Formatting.Indented);
-            string strJackJohnson = JsonConvert.SerializeObject(jackJohnson,Newtonsoft.Json.Formatting.Indented);
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                writer.Formatting = Newtonsoft.Json.Formatting.Indented;
+                writer.WriteStartObject();
+                writer.WritePropertyName("accounting");
+                writer.WriteStartArray();
+                writer.WriteStartObject();
+                writer.WritePropertyName("firstName");
+                writer.WriteValue("Mary");
+                writer.WritePropertyName("lastName");
+                writer.WriteValue("Smith");
+                writer.WritePropertyName("age");
+                writer.WriteValue(32);
+                writer.WriteEndObject();
+                writer.WriteStartObject();
+                writer.WritePropertyName("firstName");
+                writer.WriteValue("John");
+                writer.WritePropertyName("lastName");
+                writer.WriteValue("Doe");
+                writer.WritePropertyName("age");
+                writer.WriteValue(23);
+                writer.WriteEndObject();
+                writer.WriteEnd();
+                //writer.WriteEndObject();
 
-            //Attempted to add each string together before transitioning the Json to XML.
-            //Tried to use the lists but the method below wouldn't allow it. This is why I instantiated the objects. 
-            string totalObjects = accountant2 + accountant1 + salesman2 + salesman1 + strJackJohnson + strBillyBob;
 
-            //string listAccountant = JsonConvert.SerializeObject(accountants,Newtonsoft.Json.Formatting.Indented);
-            //string listSalesman= JsonConvert.SerializeObject(salesman,Newtonsoft.Json.Formatting.Indented);
-            //string listIT= JsonConvert.SerializeObject(itSpecialists,Newtonsoft.Json.Formatting.Indented);
-            //string totalLists = listAccountant + listSalesman + listIT;
+                //writer.WriteStartObject();
+                writer.WritePropertyName("sales");
+                writer.WriteStartArray();
+                writer.WriteStartObject();
+                writer.WritePropertyName("firstName");
+                writer.WriteValue("Jim");
+                writer.WritePropertyName("lastName");
+                writer.WriteValue("Galley");
+                writer.WritePropertyName("age");
+                writer.WriteValue(41);
+                writer.WriteEndObject();
+                writer.WriteStartObject();
+                writer.WritePropertyName("firstName");
+                writer.WriteValue("Sally");
+                writer.WritePropertyName("lastName");
+                writer.WriteValue("Green");
+                writer.WritePropertyName("age");
+                writer.WriteValue(27);
+                writer.WriteEndObject();
+                writer.WriteEnd();
+                //writer.WriteEndObject();
 
-            //Console.WriteLine(totalObjects);
-            //This method unsuccessful.
-            //XNode node = JsonConvert.DeserializeXNode(totalObjects, "Root");
+
+                //writer.WriteStartObject();
+                writer.WritePropertyName("it");
+                writer.WriteStartArray();
+                writer.WriteStartObject();
+                writer.WritePropertyName("firstName");
+                writer.WriteValue("Jack");
+                writer.WritePropertyName("lastName");
+                writer.WriteValue("James");
+                writer.WritePropertyName("age");
+                writer.WriteValue(45);
+                writer.WriteEndObject();
+                writer.WriteStartObject();
+                writer.WritePropertyName("firstName");
+                writer.WriteValue("Bill");
+                writer.WritePropertyName("lastName");
+                writer.WriteValue("Miller");
+                writer.WritePropertyName("age");
+                writer.WriteValue(25);
+                writer.WriteEndObject();
+                writer.WriteEnd();
+                //writer.WriteEndObject();
+
+            }
+            Console.WriteLine(sw);
+            string data = sw.ToString();
 
             var xml = XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(
-            Encoding.ASCII.GetBytes(totalObjects), new XmlDictionaryReaderQuotas()));
-            Console.WriteLine("-----------This is the XML converted from Json ");
-            Console.WriteLine();
-                Console.WriteLine(xml);
-            Console.WriteLine();
+           Encoding.ASCII.GetBytes(data), new XmlDictionaryReaderQuotas()));
 
-
-            //--------------Storing the XML, creatin a new File- XmlOutput.xml------------------
-             //xml.Save(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
-            xml.Save(@"XmlOutput.xml");
-
-            //--------------Reading XML file that was just created.
-            //string xmltext = File.ReadAllText(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
+            //XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(data);
+            Console.WriteLine(xml);
+            xml.Save(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
+            //xml.Save(@"XmlOutput.xml");
 
             string xmltext = File.ReadAllText(@"XmlOutput.xml");
-
-            //-------------------Converting XML FIle Contents into Json string------------
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmltext);
 
@@ -190,14 +237,10 @@ namespace OneCall
             Console.WriteLine();
             Console.WriteLine(jsonFromXml);
             // jsonFromXml is currently a json string
+            string fileloc = @"C:\Users\josep\source\repos\OneCall\JsonOutput.json";
+            //string fileloc = @"JsonOutput.json";
+            //File.WriteAllText(fileloc, jsonFromXml);
 
-            //FileStream fs = File.Create(@"C: \Users\josep\source\repos\OneCall\JsonOutput.json");
-
-            //string fileloc = @"C:\Users\josep\source\repos\OneCall\JsonOutput.json";
-            
-            string fileloc = @"JsonOutput.json";
-
-            //If file location doesn't exist, create the json file and write the json string to the file. If it does exist then delete the file and create new one. 
             if (File.Exists(fileloc) == false)
             {
                 File.WriteAllText(fileloc, jsonFromXml);
@@ -209,6 +252,75 @@ namespace OneCall
             }
 
             Environment.Exit(0);
+
+
+            //Created variables to store formatted serialized objects.
+            //string accountant1 = JsonConvert.SerializeObject(acc1, Newtonsoft.Json.Formatting.Indented);
+            //string accountant2 = JsonConvert.SerializeObject(acc2, Newtonsoft.Json.Formatting.Indented);
+            //string salesman1= JsonConvert.SerializeObject(sales1, Newtonsoft.Json.Formatting.Indented);
+            //string salesman2=JsonConvert.SerializeObject(sales2, Newtonsoft.Json.Formatting.Indented);
+            //string strBillyBob = JsonConvert.SerializeObject(billyBob,Newtonsoft.Json.Formatting.Indented);
+            //string strJackJohnson = JsonConvert.SerializeObject(jackJohnson,Newtonsoft.Json.Formatting.Indented);
+
+            ////Attempted to add each string together before transitioning the Json to XML.
+            ////Tried to use the lists but the method below wouldn't allow it. This is why I instantiated the objects. 
+            //string totalObjects = accountant2 + accountant1 + salesman2 + salesman1 + strJackJohnson + strBillyBob;
+
+            //string listAccountant = JsonConvert.SerializeObject(accountants,Newtonsoft.Json.Formatting.Indented);
+            //string listSalesman= JsonConvert.SerializeObject(salesman,Newtonsoft.Json.Formatting.Indented);
+            //string listIT= JsonConvert.SerializeObject(itSpecialists,Newtonsoft.Json.Formatting.Indented);
+            //string totalLists = listAccountant + listSalesman + listIT;
+
+            //Console.WriteLine(totalObjects);
+            //This method unsuccessful.
+            //XNode node = JsonConvert.DeserializeXNode(totalObjects, "Root");
+
+            //var xml = XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(
+            //Encoding.ASCII.GetBytes(totalObjects), new XmlDictionaryReaderQuotas()));
+            //Console.WriteLine("-----------This is the XML converted from Json ");
+            //Console.WriteLine();
+            //    Console.WriteLine(xml);
+            //Console.WriteLine();
+
+
+            //--------------Storing the XML, creatin a new File- XmlOutput.xml------------------
+             //xml.Save(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
+            //xml.Save(@"XmlOutput.xml");
+
+            //--------------Reading XML file that was just created.
+            //string xmltext = File.ReadAllText(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
+
+            //string xmltext = File.ReadAllText(@"XmlOutput.xml");
+
+            //-------------------Converting XML FIle Contents into Json string------------
+            //XmlDocument doc = new XmlDocument();
+            //doc.LoadXml(xmltext);
+
+            //string jsonFromXml = JsonConvert.SerializeXmlNode(doc);
+
+            //Console.WriteLine("This is the Json converted from the xml file XMLOutput.xml");
+            //Console.WriteLine();
+            //Console.WriteLine(jsonFromXml);
+            // jsonFromXml is currently a json string
+
+            //FileStream fs = File.Create(@"C: \Users\josep\source\repos\OneCall\JsonOutput.json");
+
+            //string fileloc = @"C:\Users\josep\source\repos\OneCall\JsonOutput.json";
+            
+            //string fileloc = @"JsonOutput.json";
+
+            //If file location doesn't exist, create the json file and write the json string to the file. If it does exist then delete the file and create new one. 
+            //if (File.Exists(fileloc) == false)
+            //{
+            //    File.WriteAllText(fileloc, jsonFromXml);
+            //}
+            //else
+            //{
+            //    File.Delete(fileloc);
+            //    File.WriteAllText(fileloc, jsonFromXml);
+            //}
+
+            //Environment.Exit(0);
             
             //File.WriteAllText(fs,jsonFromXml);
             //XNode node = JsonConvert.DeserializeXNode(totalObjects, "Root");
