@@ -29,227 +29,99 @@ namespace OneCall
 
             //Deserializing the Json String into the myClass Object. Had to create classes that represented json format.
             //Used jsontocsharp converter. To correctly map classes.
-            MyClass myClass = JsonConvert.DeserializeObject<MyClass>(jsonText);
-            
+            Departments departments = JsonConvert.DeserializeObject<Departments>(jsonText);
+
             //This section was done afterwards because of a few errors I was receiving. I was trying to go frrom json to xml but had extra characters.
-            Accounting acc1 = new Accounting()
-            {
-                FirstName = myClass.Accounting[0].FirstName,
-                LastName = myClass.Accounting[0].LastName,
-                Age = myClass.Accounting[0].Age
-            };
-            Accounting acc2 = new Accounting()
-            {
-                FirstName = myClass.Accounting[1].FirstName,
-                LastName = myClass.Accounting[1].LastName,
-                Age = myClass.Accounting[1].Age
-            };
-            Sale sales1 = new Sale()
-            {
-                FirstName = myClass.Sales[0].FirstName,
-                LastName = myClass.Sales[0].LastName,
-                Age = myClass.Sales[0].Age
-            };
-            Sale sales2 = new Sale()
-            {
-                FirstName = myClass.Sales[1].FirstName,
-                LastName = myClass.Sales[1].LastName,
-                Age = myClass.Sales[1].Age
-            };
-
             //Instantiating IT Employee objects. billyBob and jackJohnson variables.
-
-            IT billyBob = new IT()
-            {
-                FirstName = "Bill",
-                LastName = "Miller",
-                Age = 25
-            };
-            IT jackJohnson = new IT()
-            {
-                FirstName = "Jack",
-                LastName = "James",
-                Age = 45
-            };
-           
-
-            //Here we are creating a list of accountants. Running a loop through all of the accountants and inserting them in the created list. 
+            IT billyBob = new IT("Billy", "Bob", 25);
+            IT jackJohnson = new IT("Jack", "Johnson", 45);
             List<Accounting> accountants = new List<Accounting>();
-            for(var i = 0; i < myClass.Accounting.Count;i++)
+            double accountingTotal = 0;
+            double accountingAvg = 0;
+            for (var i = 0; i < departments.Accounting.Count; i++)
             {
-                accountants.Add(myClass.Accounting[i]);
+                accountants.Add(departments.Accounting[i]);
+                accountingTotal = accountingTotal + departments.Accounting[i].Age;
             }
-            //Calculating the average age of all of the accountants by running for loop through the accountant list.
-            double totalAccountantAges = 0;
-            for(int i = 0; i < accountants.Count; i++)
-            {
-                totalAccountantAges = totalAccountantAges + accountants[i].Age;
-            }
-            double avgAccountantAge = totalAccountantAges / accountants.Count;
-            Console.WriteLine($"The average age of an accountant is {avgAccountantAge}.");
-            ////////-------The first accountant is Jon Doe------/////////
-                
-            
-            ///////////////////////////--SALES EMPLOYEE AGE///////////////////////////////////////////////////////////////////////////////////////
-            ///Creating another list of Salesman.
-            List<Sale> salesman = new List<Sale>();
-            for (var i = 0; i < myClass.Sales.Count; i++)
-            {
-                salesman.Add(myClass.Sales[i]);
-            }
-            /////////////////////////////Calculating average age of sales department. 
-            double totalSalesmenAges = 0;
-            for (int i = 0; i < salesman.Count; i++)
-            {
-                totalSalesmenAges = totalSalesmenAges + salesman[i].Age;
-            }
-            double avgSalesmanAge = totalSalesmenAges / salesman.Count;
-            Console.WriteLine($"The average age of a salesman is {avgSalesmanAge}.");
-            
+                accountingAvg = accountingTotal / departments.Accounting.Count;
+           // Console.WriteLine(accountingAvg);
 
-            /////////////////////////////////----IT EMPLOYEE AGE-----------/////////////
-            /////Calculating average age of It specialists. I created an ITSpecialist list later in the application for the sort. 
-            double it1Age = billyBob.Age;
-            double it2Age = jackJohnson.Age;
-             double averageAgeOfIT = (it1Age + it2Age) /2;
-            Console.WriteLine($"The average age of IT department employee is {averageAgeOfIT}.");
-            Console.WriteLine("-----------------------------------------------------------");
+            double salesmanTotal = 0;
+            double salesmanAvg = 0;
 
-            //////////////////////////----SORTING BY AGE/////////////////////////////////////////////
-            /////Printing the first employee in each department in list  before the sort
-            Console.WriteLine("The first accountant is currently "+accountants[0].FirstName + " " + accountants[0].LastName + " Age " + accountants[0].Age);
-            Console.WriteLine("The first salesman is currently " + salesman[0].FirstName + " " + salesman[0].LastName + " Age " + salesman[0].Age);
-            
-            //sort method takes two perameters that are compared to each other
+            List<Sales> salesman = new List<Sales>();
+            for (var i = 0; i < departments.Sales.Count; i++)
+            {
+                salesman.Add(departments.Sales[i]);
+                salesmanTotal = salesmanTotal + departments.Sales[i].Age;
+            }
+                salesmanAvg = salesmanTotal / departments.Sales.Count;
+          //  Console.WriteLine(salesmanAvg);
+            List<IT> itGuys = new List<IT>();
+            itGuys.Add(billyBob);
+            itGuys.Add(jackJohnson);
+           var itGuysTotal = 0;
+            var itGuysAvg = 0;
+            for (var i = 0; i < itGuys.Count; i++)
+            {
+                itGuysTotal = itGuysTotal + itGuys[i].Age;
+            }
+                itGuysAvg = itGuysTotal/itGuys.Count;
+            Console.WriteLine($"The average age of an accountant is {accountingAvg}.");
+            Console.WriteLine($"The average age of a salesman is {salesmanAvg}.");
+            Console.WriteLine($"The average age of IT department employee is {itGuysAvg}.");
+
             accountants.Sort((x, y) => y.Age.CompareTo(x.Age));
-
-            //------The first accountant"accountant[0]" is now Mary Smith
-            Console.WriteLine();
-            Console.WriteLine("The following lines are after the list sort.");
-            Console.WriteLine();
-            Console.WriteLine("The first accountant is now "+accountants[0].FirstName + " " + accountants[0].LastName + " Age " + accountants[0].Age);
-
             salesman.Sort((x, y) => y.Age.CompareTo(x.Age));
-            Console.WriteLine("The first salesman is now " + salesman[0].FirstName + " " + salesman[0].LastName + " Age " + salesman[0].Age);
-            //Created list of IT department to run the sort.
-            List<IT> itSpecialists = new List<IT> { billyBob,jackJohnson};
-            Console.WriteLine("After List Creation of IT Department. before sort");
-            Console.WriteLine("The first IT specialist is currently " + itSpecialists[0].FirstName + " " + itSpecialists[0].LastName + " Age " + itSpecialists[0].Age);
-            itSpecialists.Sort((x, y) => y.Age.CompareTo(x.Age));
-            Console.WriteLine("After Sort");
-            Console.WriteLine("The first IT Specialist is now " + itSpecialists[0].FirstName + " " + itSpecialists[0].LastName + " Age " + itSpecialists[0].Age);
-            Console.WriteLine("-----------------------------------------------------------");
-            //Issues trying to loop through this list. Perhaps because I created the list by looping thru json instead of with objects I later created.
-
-
-            StringBuilder sb = new StringBuilder();
-            StringWriter sw = new StringWriter(sb);
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            itGuys.Sort((x, y) => y.Age.CompareTo(x.Age));
+            foreach (var employee in accountants)
             {
-                writer.Formatting = Newtonsoft.Json.Formatting.Indented;
-                writer.WriteStartObject();
-                writer.WritePropertyName("accounting");
-                writer.WriteStartArray();
-                writer.WriteStartObject();
-                writer.WritePropertyName("firstName");
-                writer.WriteValue("Mary");
-                writer.WritePropertyName("lastName");
-                writer.WriteValue("Smith");
-                writer.WritePropertyName("age");
-                writer.WriteValue(32);
-                writer.WriteEndObject();
-                writer.WriteStartObject();
-                writer.WritePropertyName("firstName");
-                writer.WriteValue("John");
-                writer.WritePropertyName("lastName");
-                writer.WriteValue("Doe");
-                writer.WritePropertyName("age");
-                writer.WriteValue(23);
-                writer.WriteEndObject();
-                writer.WriteEnd();
-                //writer.WriteEndObject();
-
-
-                //writer.WriteStartObject();
-                writer.WritePropertyName("sales");
-                writer.WriteStartArray();
-                writer.WriteStartObject();
-                writer.WritePropertyName("firstName");
-                writer.WriteValue("Jim");
-                writer.WritePropertyName("lastName");
-                writer.WriteValue("Galley");
-                writer.WritePropertyName("age");
-                writer.WriteValue(41);
-                writer.WriteEndObject();
-                writer.WriteStartObject();
-                writer.WritePropertyName("firstName");
-                writer.WriteValue("Sally");
-                writer.WritePropertyName("lastName");
-                writer.WriteValue("Green");
-                writer.WritePropertyName("age");
-                writer.WriteValue(27);
-                writer.WriteEndObject();
-                writer.WriteEnd();
-                //writer.WriteEndObject();
-
-
-                //writer.WriteStartObject();
-                writer.WritePropertyName("it");
-                writer.WriteStartArray();
-                writer.WriteStartObject();
-                writer.WritePropertyName("firstName");
-                writer.WriteValue("Jack");
-                writer.WritePropertyName("lastName");
-                writer.WriteValue("James");
-                writer.WritePropertyName("age");
-                writer.WriteValue(45);
-                writer.WriteEndObject();
-                writer.WriteStartObject();
-                writer.WritePropertyName("firstName");
-                writer.WriteValue("Bill");
-                writer.WritePropertyName("lastName");
-                writer.WriteValue("Miller");
-                writer.WritePropertyName("age");
-                writer.WriteValue(25);
-                writer.WriteEndObject();
-                writer.WriteEnd();
-                //writer.WriteEndObject();
-
+                Console.WriteLine($"{employee.FirstName} is an accountant and {employee.Age} years old");
             }
-            Console.WriteLine(sw);
-            string data = sw.ToString();
-
-            var xml = XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(
-           Encoding.ASCII.GetBytes(data), new XmlDictionaryReaderQuotas()));
-
-            //XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(data);
-            Console.WriteLine(xml);
-            xml.Save(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
-            //xml.Save(@"XmlOutput.xml");
-
-            string xmltext = File.ReadAllText(@"XmlOutput.xml");
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmltext);
-
-            string jsonFromXml = JsonConvert.SerializeXmlNode(doc);
-
-            Console.WriteLine("This is the Json converted from the xml file XMLOutput.xml");
-            Console.WriteLine();
-            Console.WriteLine(jsonFromXml);
-            // jsonFromXml is currently a json string
-            string fileloc = @"C:\Users\josep\source\repos\OneCall\JsonOutput.json";
-            //string fileloc = @"JsonOutput.json";
-            //File.WriteAllText(fileloc, jsonFromXml);
-
-            if (File.Exists(fileloc) == false)
+            foreach (var employee in salesman)
             {
-                File.WriteAllText(fileloc, jsonFromXml);
+                Console.WriteLine($"{employee.FirstName} is a salesman and {employee.Age} years old");
             }
-            else
+            foreach (var employee in itGuys)
             {
-                File.Delete(fileloc);
-                File.WriteAllText(fileloc, jsonFromXml);
+                Console.WriteLine($"{employee.FirstName} is an itSpecialist and {employee.Age} years old");
             }
+            //XmlDocument doc= new XmlDocument();
+            //XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(jsonText);
+            //Console.WriteLine(doc);
+
+
+           // var xml = XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(
+           //Encoding.ASCII.GetBytes(data), new XmlDictionaryReaderQuotas()));
+
+           // //XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(data);
+           // Console.WriteLine(xml);
+           // xml.Save(@"C:\Users\josep\source\repos\OneCall\XmlOutput.xml");
+           // //xml.Save(@"XmlOutput.xml");
+
+           // string xmltext = File.ReadAllText(@"XmlOutput.xml");
+           // XmlDocument doc = new XmlDocument();
+           // doc.LoadXml(xmltext);
+
+           // string jsonFromXml = JsonConvert.SerializeXmlNode(doc);
+
+           // Console.WriteLine("This is the Json converted from the xml file XMLOutput.xml");
+           // Console.WriteLine();
+           // Console.WriteLine(jsonFromXml);
+           // // jsonFromXml is currently a json string
+           // string fileloc = @"C:\Users\josep\source\repos\OneCall\JsonOutput.json";
+           // //string fileloc = @"JsonOutput.json";
+           // //File.WriteAllText(fileloc, jsonFromXml);
+
+           // if (File.Exists(fileloc) == false)
+           // {
+           //     File.WriteAllText(fileloc, jsonFromXml);
+           // }
+           // else
+           // {
+           //     File.Delete(fileloc);
+           //     File.WriteAllText(fileloc, jsonFromXml);
+           // }
 
             Environment.Exit(0);
 

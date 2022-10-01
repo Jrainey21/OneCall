@@ -19,7 +19,7 @@ namespace OneCall
         public int Age { get; set; }
     }
 
-    public class Sale
+    public class Sales
     {
         [JsonProperty("firstName")]
         public string FirstName { get; set; }
@@ -31,15 +31,15 @@ namespace OneCall
         public int Age { get; set; }
     }
 
-    public class MyClass
+    public class Departments
     {
         [JsonProperty("accounting")]
         public List<Accounting> Accounting { get; set; }
 
         [JsonProperty("sales")]
-        public List<Sale> Sales { get; set; }
+        public List<Sales> Sales { get; set; }
         [JsonProperty("it")]
-        public List<Sale> IT { get; set; }
+        public List<IT> IT { get; set; }
 
     }
 
@@ -51,6 +51,14 @@ namespace OneCall
         public string LastName { get; set; }
         [JsonProperty("age")]
         public int Age { get; set; }
+
+        public IT(string firstName,string lastName,int age)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Age = age;
+
+        }
         
         
     }
