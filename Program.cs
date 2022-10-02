@@ -31,10 +31,18 @@ namespace OneCall
             //Used jsontocsharp converter. To correctly map classes.
             Departments departments = JsonConvert.DeserializeObject<Departments>(jsonText);
 
-            //This section was done afterwards because of a few errors I was receiving. I was trying to go frrom json to xml but had extra characters.
-            //Instantiating IT Employee objects. billyBob and jackJohnson variables.
+        
             IT billyBob = new IT("Billy", "Bob", 25);
             IT jackJohnson = new IT("Jack", "Johnson", 45);
+
+            int numAccountants = Accounting.getCount();
+          
+            Console.WriteLine(Accounting.getAvgAgeOfAllAccountants());
+            Console.WriteLine(Sales.getAvgAgeOfAllAccountants());
+            Console.WriteLine(IT.getAvgAgeOfAllITSpecialists());
+
+
+
             List<Accounting> accountants = new List<Accounting>();
             double accountingTotal = 0;
             double accountingAvg = 0;
@@ -86,6 +94,8 @@ namespace OneCall
             {
                 Console.WriteLine($"{employee.FirstName} is an itSpecialist and {employee.Age} years old");
             }
+            //Console.WriteLine(Accounting.getAvgAgeOfAllAccountants(accountants));
+            //Console.WriteLine(Departments.getAvgAgeOfDepartment(accountants);
             //XmlDocument doc= new XmlDocument();
             //XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(jsonText);
             //Console.WriteLine(doc);
